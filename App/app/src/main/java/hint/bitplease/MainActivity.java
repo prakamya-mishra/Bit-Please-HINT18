@@ -12,6 +12,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -22,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton btnSpeak;
     private final int REQ_CODE_SPEECH_INPUT = 100;
     public String Command;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference sensorDataRef;
+    private DatabaseReference parentRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         txtSpeechInput = (TextView) findViewById(R.id.txtView);
         Distance = (EditText) findViewById(R.id.dist);
         btnSpeak = (ImageButton) findViewById(R.id.btnSpeak);
-
         btnSpeak.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -37,7 +43,10 @@ public class MainActivity extends AppCompatActivity {
                 promptSpeechInput();
             }
         });
-
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        parentRef = firebaseDatabase.getReference();
+        sensorDataRef = parentRef.child("sensorinfo");
+        sensorDataRef.setValue(new SensorData(1.0f,1.0f,1.0f));
     }
 
     private void promptSpeechInput() {
@@ -73,6 +82,5 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-
 
 }
