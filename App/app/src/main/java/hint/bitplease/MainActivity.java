@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         });
        // writeValuesToFirebase();
         addPickedUpListener();
+        addMaliciousUserListener();
     }
 
     private void addPickedUpListener(){
@@ -84,6 +85,53 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG,databaseError.getCode() + databaseError.getMessage());
             }
         });
+    }
+
+    private void addMaliciousUserListener(){
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        parentRef = firebaseDatabase.getReference();
+        sensorDataRef = parentRef.child("sensorinfo");
+        DatabaseReference lockedBitRef = sensorDataRef.child("lockedBit");
+        final DatabaseReference maliciousUserRef = sensorDataRef.child("maliciousUserBit");
+        lockedBitRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Integer lockedBit = dataSnapshot.getValue(Integer.class);
+                if(lockedBit == 1){
+                    maliciousUserRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Integer maliciousUserBit = dataSnapshot.getValue(Integer.class);
+                            if(maliciousUserBit == 1){
+                                PugNotification.with(getApplicationContext()).load().title("Warning")
+                                        .bigTextStyle("Unknown fingerprint detected").smallIcon(R.drawable.pugnotification_ic_launcher)
+                                        .largeIcon(R.drawable.pugnotification_ic_launcher).flags(Notification.DEFAULT_ALL).simple().build();
+                                initMaliciousUserBitState();
+                            }
+                            else{
+                                Log.d(TAG,"maliciousUserBit reset");
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+    private void initMaliciousUserBitState(){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference parentRef = database.getReference();
+        DatabaseReference sensorInfoRef = parentRef.child("sensorinfo");
+        DatabaseReference maliciousUserBitRef = sensorInfoRef.child("maliciousUserBit");
+        maliciousUserBitRef.setValue(new Integer(0));
     }
 
     private void initPickedUpState(){

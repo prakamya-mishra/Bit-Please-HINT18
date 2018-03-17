@@ -23,8 +23,11 @@ import com.aitorvs.android.fingerlock.FingerLock;
 import com.aitorvs.android.fingerlock.FingerLockManager;
 import com.aitorvs.android.fingerlock.FingerLockResultCallback;
 import com.aitorvs.android.fingerlock.FingerprintDialog;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity implements FingerLockResultCallback,FingerprintDialog.Callback {
 
@@ -55,12 +58,32 @@ public class MainActivity extends AppCompatActivity implements FingerLockResultC
             useDialog.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    firebaseDatabase = FirebaseDatabase.getInstance();
+                    parentRef = firebaseDatabase.getReference();
+                    sensorDataRef = parentRef.child("sensorinfo");
+                    DatabaseReference lockedBitRef = sensorDataRef.child("lockedBit");
+                    lockedBitRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Integer lockedBit = dataSnapshot.getValue(Integer.class);
+                            if(lockedBit == 1){
+                                initPickedUpState();
+                                executeTask();
+                            }
+                            else{
+                                Log.d(TAG,"The baggage has not been assigned to the user");
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
                     new FingerprintDialog.Builder().with(MainActivity.this).setKeyName(KEY_NAME).setRequestCode(69).show();
                 }
             });
         }
         initPickedUpState();
-        executeTask();
     }
 
     @Override
@@ -75,7 +98,27 @@ public class MainActivity extends AppCompatActivity implements FingerLockResultC
                 break;
 
             case FingerLock.FINGERPRINT_NOT_RECOGNIZED :
+                firebaseDatabase = FirebaseDatabase.getInstance();
+                parentRef = firebaseDatabase.getReference();
+                sensorDataRef = parentRef.child("sensorinfo");
+                DatabaseReference lockedBitRef = sensorDataRef.child("lockedBit");
+                lockedBitRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Integer lockedBit = dataSnapshot.getValue(Integer.class);
+                        if(lockedBit == 1){
+                            DatabaseReference maliciousUserBit = sensorDataRef.child("maliciousUserBit");
+                            maliciousUserBit.setValue(new Integer(1));
+                        }
+                        else{
+                            Log.d(TAG,"No effect");
+                        }
+                    }
 
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
                 break;
 
             case FingerLock.FINGERPRINT_NOT_SUPPORTED :
@@ -95,6 +138,13 @@ public class MainActivity extends AppCompatActivity implements FingerLockResultC
     @Override
     public void onFingerLockAuthenticationSucceeded(){
         mStatus.setText(R.string.status_authenticated);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        parentRef = firebaseDatabase.getReference();
+        sensorDataRef = parentRef.child("sensorinfo");
+        DatabaseReference lockedBit = sensorDataRef.child("lockedBit");
+        lockedBit.setValue(new Integer(1));
+        initPickedUpState();
+        executeTask();
     }
 
     @Override
