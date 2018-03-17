@@ -87,16 +87,16 @@
         <section class="no-padding-top no-padding-bottom">
           <div class="container-fluid">
             <div class="row">
-              <div class="col-md-3 col-sm-6">
+              <div class="col-md-12">
                 <div class="statistic-block block">
                   <div class="progress-details d-flex align-items-end justify-content-between">
                     <div class="title">
                       <div class="icon"><i class="icon-user-1"></i></div><strong>Distance</strong>
                     </div>
-                    <div class="number dashtext-1">27</div>
+                    <div class="number dashtext-1" id="dist"></div>
                   </div>
                   <div class="progress progress-template">
-                    <div role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-1"></div>
+                    <div role="progressbar" id="distStyle" style="width: 0%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-1"></div>
                   </div>
                 </div>
               </div>
@@ -146,11 +146,35 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-lg-4">
-                <div class="bar-chart block no-margin-bottom">
-                  <canvas id="barChartExample1"></canvas>
+                <div>
+                  <div class="statistic-block block">
+                    <div class="progress-details d-flex align-items-end justify-content-between">
+                      <div class="title">
+                        <div class="icon"><i class="icon-user-1"></i></div><strong>Gyroscope X</strong>
+                      </div>
+                      <div class="number dashtext-1" id="gx"></div>
+                    </div>
+                  </div>
                 </div>
-                <div class="bar-chart block">
-                  <canvas id="barChartExample2"></canvas>
+                <div>
+                  <div class="statistic-block block">
+                    <div class="progress-details d-flex align-items-end justify-content-between">
+                      <div class="title">
+                        <div class="icon"><i class="icon-user-1"></i></div><strong>Gyroscope Y</strong>
+                      </div>
+                      <div class="number dashtext-1" id="gy"></div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="statistic-block block">
+                    <div class="progress-details d-flex align-items-end justify-content-between">
+                      <div class="title">
+                        <div class="icon"><i class="icon-user-1"></i></div><strong>Gyroscope Z</strong>
+                      </div>
+                      <div class="number dashtext-1" id="gz"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="col-lg-8">
@@ -199,11 +223,11 @@
                   </div>
                 </div>
               </div>-->
-              <div class="col-lg-12">
+              <!--<div class="col-lg-12">
                 <div class="drills-chart block">
                   <canvas id="lineChart1"></canvas>
                 </div>
-              </div>
+              </div>-->
             </div>
           </div>
         </section>
@@ -309,7 +333,7 @@
             </div>
           </div>
         </section>-->
-        <section class="margin-bottom-sm">
+        <!--<section class="margin-bottom-sm">
           <div class="container-fluid">
             <div class="row d-flex align-items-stretch">
               <div class="col-lg-4">
@@ -359,7 +383,7 @@
               </div>
             </div>
           </div>
-        </section>
+        </section>-->
         <!--<section class="no-padding-bottom">
           <div class="container-fluid">
             <div class="row">
@@ -423,7 +447,7 @@
             </div>
           </div>
         </section>-->
-        <section>
+        <!--<section>
           <div class="container-fluid">
             <div class="row">
               <div class="col-lg-4">
@@ -455,7 +479,7 @@
               </div>
             </div>
           </div>
-        </section>
+        </section>-->
         <!--<footer class="footer">
           <div class="footer__block block no-margin-bottom">
             <div class="container-fluid text-center">-->

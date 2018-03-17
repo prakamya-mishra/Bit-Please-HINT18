@@ -35,7 +35,7 @@ function displayCharts(sensorData){
               }],
               yAxes: [{
                   ticks: {
-                      max: 60,
+                      max: 200,
                       min: 10
                   },
                   display: true,
@@ -52,7 +52,7 @@ function displayCharts(sensorData){
           labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
           datasets: [
               {
-                  label: "",
+                  label: "Distance from left",
                   fill: true,
                   lineTension: 0.2,
                   backgroundColor: "transparent",
@@ -71,11 +71,11 @@ function displayCharts(sensorData){
                   pointHoverBorderWidth: 2,
                   pointRadius: 1,
                   pointHitRadius: 0,
-                  data: [20, 27, 20, 35, 30, 40, 33, 25, 39],
+                  data: sensorData.distanceLeft,
                   spanGaps: false
               },
               {
-                  label: "",
+                  label: "Distance from right",
                   fill: true,
                   lineTension: 0.2,
                   backgroundColor: "transparent",
@@ -94,12 +94,14 @@ function displayCharts(sensorData){
                   pointHoverBorderWidth: 2,
                   pointRadius: 1,
                   pointHitRadius: 10,
-                  data: [25, 17, 28, 25, 33, 27, 30, 33, 27],
+                  data: sensorData.distanceRight,
                   spanGaps: false
               }
           ]
       }
   });
+
+
 
 
 
@@ -655,4 +657,10 @@ function displayCharts(sensorData){
   var pieChartExample = {
       responsive: true
   };
+  $('#dist').html(sensorData.distance+" cm");
+  $('#gx').html(sensorData.gyroX+" rad/s");
+  $('#gy').html(sensorData.gyroY+" rad/s");
+  $('#gz').html(sensorData.gyroZ+" rad/s");
+  var distper = sensorData.distance/3;
+  $('#distStyle').css('width', distper+'%');
 }
