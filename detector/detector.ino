@@ -15,33 +15,23 @@ void setup() {
   pinMode(echoR, INPUT);
   pinMode(13, OUTPUT);
   Serial.begin(9600);
-  btserial.begin(38400);
+  btserial.begin(9600);
 }
 
 void loop() {
-    
- /* btserial.println("1");
-  durationL = pulseIn(12, HIGH);
+
+  btserial.write("1");
+  /*durationL = pulseIn(12, HIGH);
   durationR = pulseIn(10, HIGH);
-  btserial.println("0");
+  btserial.write("0");
   long distL = SPEED * durationL;
   long distR = SPEED * durationR;
   String dL = (String)distL;
   String dR = (String)distR;
   
-  Serial.println("L :" + dL + " R: "+ dR);
-  delay(2000);*/
-  /*if (Serial.available())
-    btserial.write(Serial.read());
-  // Keep reading from HC-05 and send to Arduino Serial Monitor
-  if(btserial.available())
-    Serial.write(btserial.read());
-*/
-  if(btserial.available())
-    {
-      if(btserial.read() == '1')
-        digitalWrite(13, HIGH);
-    }
-  // Keep reading from Arduino Serial Monitor and send to HC-05
+  Serial.println("L :" + dL + " R: "+ dR);*/
+  delay(2000);
+  btserial.write("0");
+  delay(2000);
   
 }
