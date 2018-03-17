@@ -1,12 +1,12 @@
 #include<SoftwareSerial.h>
 SoftwareSerial btserial(2,3);
-const int trig = 12;
+
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
   btserial.begin(9600);
-  pinMode(trig, OUTPUT);
+  pinMode(13, OUTPUT);
 }
 
 void loop() {
@@ -14,12 +14,6 @@ void loop() {
   if(btserial.available())
   {
     byte c = btserial.read();
-    if(c)
-    {
-      digitalWrite(trig, HIGH);
-      delayMicroseconds(10);
-      digitalWrite(trig, LOW);
-      Serial.println("Ping...");
-    }
+    Serial.println(c);
   }
 }

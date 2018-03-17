@@ -19,9 +19,13 @@ void setup() {
 }
 
 void loop() {
-
-  //btserial.write("1");
-  /*durationL = pulseIn(12, HIGH);
+    
+    //delay(1000);
+  
+ // btserial.write(2);
+  //Serial.println("1");
+  btserial.write(2);
+  durationL = pulseIn(12, HIGH);
   durationR = pulseIn(10, HIGH);
   btserial.write("0");
   long distL = SPEED * durationL;
@@ -29,11 +33,11 @@ void loop() {
   String dL = (String)distL;
   String dR = (String)distR;
   
-  Serial.println("L :" + dL + " R: "+ dR);*/
-  /*delay(2000);
-  btserial.write("0");
-  delay(2000);*/
-  if(Serial.available())
+  Serial.println("L :" + dL + " R: "+ dR);
+  delay(2000);
+  //btserial.write("0");
+  //delay(2000);
+  /*if(Serial.available())
     {
       char c = Serial.read();
       btserial.write(c);
@@ -42,6 +46,6 @@ void loop() {
   {
     char c = Serial.read();
     Serial.write(c);
-  }
+  }*/
     
 }
