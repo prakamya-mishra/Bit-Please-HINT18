@@ -20,7 +20,7 @@ void setup() {
 
 void loop() {
 
-  btserial.write("1");
+  //btserial.write("1");
   /*durationL = pulseIn(12, HIGH);
   durationR = pulseIn(10, HIGH);
   btserial.write("0");
@@ -30,8 +30,18 @@ void loop() {
   String dR = (String)distR;
   
   Serial.println("L :" + dL + " R: "+ dR);*/
-  delay(2000);
+  /*delay(2000);
   btserial.write("0");
-  delay(2000);
-  
+  delay(2000);*/
+  if(Serial.available())
+    {
+      char c = Serial.read();
+      btserial.write(c);
+    }
+  if(btserial.available())
+  {
+    char c = Serial.read();
+    Serial.write(c);
+  }
+    
 }
