@@ -18,12 +18,14 @@ const int trigR = 8;
 const char* ssid = "AndroidAP";
 const char* password = "coehv1902ha,vj";
 
-SoftwareSerial btserial(2,16);
+SoftwareSerial btserial(2,16); //Tx and Rx (Tx of bluetooth has to be connected to Rx of the MCU and vice-versa)
 ESP8266WebServer server(80); 
 
 void handleRoot() {
- String s = "DurationL: "+durationL+" DurationR: "+durationR; 
+ String s = "DurationL: "+(String)durationL+" DurationR: "+(String)durationR; 
  server.send(200, "text/html", s); 
+
+}
  
 void setup(){
   Serial.begin(9600);
@@ -43,7 +45,7 @@ void loop(){
   btserial.write(2);
   durationL = left.ping();
   durationR = right.ping();
-  Serial.println("L "+(String)distL+ " R "+(String)distR);
+  Serial.println("L "+(String)durationL+ " R "+(String)durationR);
   //Serial.println(distR);
   delay(100);        
 }
