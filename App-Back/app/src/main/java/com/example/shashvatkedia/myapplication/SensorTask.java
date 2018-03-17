@@ -11,6 +11,8 @@ import android.util.Log;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by shashvatkedia on 17/03/18.
  */
@@ -19,7 +21,7 @@ public class SensorTask extends AsyncTask<Void, Void, Void> implements SensorEve
 
     private final String TAG = SensorTask.class.getName();
     private Context con;
-    private int flag = 0;
+    private int flag = 0,count = 0;
     private float X,Y,Z;
 
     public SensorTask(Context context){
@@ -33,6 +35,15 @@ public class SensorTask extends AsyncTask<Void, Void, Void> implements SensorEve
                 if(flag == 1){
                     SensorManager manager = (SensorManager) con.getSystemService(Context.SENSOR_SERVICE);
                     manager.unregisterListener(this);
+                    if(count == 0){
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference parentRef = database.getReference();
+                        DatabaseReference sensorInforef = parentRef.child("sensorinfo");
+                        DatabaseReference pickedUpFlag = sensorInforef.child("pickedUp");
+                        pickedUpFlag.setValue(new Integer(1));
+                        count = 1;
+                    }
+                    writeToFirebase();
                     break;
                 }
                 else{
@@ -77,7 +88,13 @@ public class SensorTask extends AsyncTask<Void, Void, Void> implements SensorEve
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference parentRef = database.getReference();
         DatabaseReference sensorInfoRef = parentRef.child("sensorinfo");
-        DatabaseReference gyroRef = sensorInfoRef.child("gyroZ");
-        parentRef.setValue(new Float(Z));
+        DatabaseReference gyroRefZ = sensorInfoRef.child("gyroZ");
+        DatabaseReference gyroRefY = sensorInfoRef.child("gyroY");
+        DatabaseReference gyroRefX = sensorInfoRef.child("gyroX");
+        DecimalFormat twoDecimalFormat = new DecimalFormat("#.##");
+        Log.e(TAG,Float.valueOf(twoDecimalFormat.format(X))+"");
+        gyroRefX.setValue(Float.valueOf(twoDecimalFormat.format(X)));
+        gyroRefY.setValue(Float.valueOf(twoDecimalFormat.format(Y)));
+        gyroRefZ.setValue(Float.valueOf(twoDecimalFormat.format(Z)));
     }
 }
