@@ -1,5 +1,6 @@
 package hint.bitplease;
 
+import android.app.Notification;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.speech.RecognizerIntent;
@@ -23,6 +24,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import br.com.goncalves.pugnotification.notification.PugNotification;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,7 +54,44 @@ public class MainActivity extends AppCompatActivity {
                 promptSpeechInput();
             }
         });
-        writeValuesToFirebase();
+       // writeValuesToFirebase();
+        addPickedUpListener();
+    }
+
+    private void addPickedUpListener(){
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        parentRef = firebaseDatabase.getReference();
+        sensorDataRef = parentRef.child("sensorinfo");
+        DatabaseReference pickedUpRef = sensorDataRef.child("pickedUp");
+        pickedUpRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                 Integer pickdeUp = dataSnapshot.getValue(Integer.class);
+                 Log.e(TAG,pickdeUp+"");
+                if(pickdeUp == 1){
+                    PugNotification.with(getApplicationContext()).load().title("Warning")
+                            .bigTextStyle("Your bag was lifted was this you?").smallIcon(R.drawable.pugnotification_ic_launcher)
+                            .largeIcon(R.drawable.pugnotification_ic_launcher).flags(Notification.DEFAULT_ALL).simple().build();
+                    initPickedUpState();
+                }
+                else{
+                    Log.d(TAG,"pickedUp value reset i.e Server app relaunched");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG,databaseError.getCode() + databaseError.getMessage());
+            }
+        });
+    }
+
+    private void initPickedUpState(){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference parentRef = database.getReference();
+        DatabaseReference sensorInfoRef = parentRef.child("sensorinfo");
+        DatabaseReference pickedUpRef = sensorInfoRef.child("pickedUp");
+        pickedUpRef.setValue(new Integer(0));
     }
 
     private void promptSpeechInput() {
@@ -93,9 +133,6 @@ public class MainActivity extends AppCompatActivity {
         parentRef = firebaseDatabase.getReference();
         sensorDataRef = parentRef.child("sensorinfo");
         DatabaseReference distanceRef = sensorDataRef.child("distance");
-        DatabaseReference gyroXRef = sensorDataRef.child("gyroX");
-        DatabaseReference gyroYRef = sensorDataRef.child("gyroY");
-        DatabaseReference gyroZRef = sensorDataRef.child("gyroZ");
         final DatabaseReference distanceLeft = sensorDataRef.child("distanceLeft");
         final DatabaseReference distanceRight = sensorDataRef.child("distanceRight");
         distanceLeft.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -149,8 +186,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         distanceRef.setValue(new Float(1.0));
-        gyroXRef.setValue(new Float(1.0));
-        gyroYRef.setValue(new Float(1.0));
-        gyroZRef.setValue(new Float(1.0));
     }
 }
