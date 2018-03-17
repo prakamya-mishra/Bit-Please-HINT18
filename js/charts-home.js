@@ -4,6 +4,7 @@ $(document).ready(function () {
 
     Chart.defaults.global.defaultFontColor = '#75787c';
 
+    var firebaseDatabase = firebase.database().ref("sensorinfo");
 
     // ------------------------------------------------------- //
     // Line Chart
