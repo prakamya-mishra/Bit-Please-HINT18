@@ -6,6 +6,7 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
   btserial.begin(9600);
+  pinMode(13, OUTPUT);
   pinMode(trig, OUTPUT);
 }
 
@@ -14,6 +15,7 @@ void loop() {
   if(btserial.available())
   {
     byte c = btserial.read();
+    Serial.println(millis());
     if(c)
     {
       digitalWrite(trig, HIGH);

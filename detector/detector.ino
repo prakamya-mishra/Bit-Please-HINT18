@@ -25,16 +25,18 @@ void loop() {
  // btserial.write(2);
   //Serial.println("1");
   btserial.write(2);
+  Serial.println(millis());
+  digitalWrite(13, HIGH);
   durationL = pulseIn(12, HIGH);
   durationR = pulseIn(10, HIGH);
-  btserial.write("0");
   long distL = SPEED * durationL;
   long distR = SPEED * durationR;
   String dL = (String)distL;
   String dR = (String)distR;
-  
   Serial.println("L :" + dL + " R: "+ dR);
+  digitalWrite(13, LOW);
   delay(2000);
+  
   //btserial.write("0");
   //delay(2000);
   /*if(Serial.available())
