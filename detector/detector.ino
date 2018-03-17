@@ -1,5 +1,8 @@
 #include<SoftwareSerial.h>
+#include<NewPing.h>
 
+NewPing left(12,9);
+NewPing right(11,8);
 const int rx = 2;
 const int tx = 3;
 long durationL, durationR;
@@ -13,8 +16,6 @@ SoftwareSerial btserial(rx,tx);
 
 void setup() {
   
-  pinMode(echoL, INPUT);
-  pinMode(echoR, INPUT);
   pinMode(13, OUTPUT);
   Serial.begin(9600);
   btserial.begin(9600);
@@ -27,20 +28,10 @@ void loop() {
  // btserial.write(2);
   //Serial.println("1");
   btserial.write(2);
-  digitalWrite(trigR, LOW);
-  digitalWrite(trigL, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigR, HIGH);
-  digitalWrite(trigL, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigR, LOW);
-  digitalWrite(trigL, LOW);
-  durationL = pulseIn(echoL, HIGH);
-  durationR = pulseIn(echoR, HIGH);
-  long distL = SPEED * durationL;
-  long distR = SPEED * durationR;
-  Serial.println(distL);
-  Serial.println(distR);
+  long distL = left.ping_cm();
+  long distR = right.ping_cm();
+  Serial.println("L "+(String)distL+ " R "+(String)distR);
+  //Serial.println(distR);
   delay(1000);
   
   //btserial.write("0");

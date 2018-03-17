@@ -14,5 +14,6 @@ void loop() {
   delayMicroseconds(10);
   digitalWrite(12, LOW);
   long duration = pulseIn(9, HIGH);
-  Serial.println(duration);
+  double dist = 343 * duration * 0.000001 * 100;
+  Serial.println(dist);
 }

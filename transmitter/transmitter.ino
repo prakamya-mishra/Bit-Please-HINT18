@@ -1,4 +1,6 @@
 #include<SoftwareSerial.h>
+#include<NewPing.h>
+NewPing sonar(9,12);
 SoftwareSerial btserial(2,3);
 const int trig = 12;
 
@@ -15,13 +17,14 @@ void loop() {
   if(btserial.available())
   {
     byte c = btserial.read();
-    digitalWrite(trig, LOW);
-    delayMicroseconds(2);
+    /*digitalWrite(trig, LOW);
+    delayMicroseconds(2);*/
     if(c)
     {
-      digitalWrite(trig, HIGH);
+      /*digitalWrite(trig, HIGH);
       delayMicroseconds(10);
-      digitalWrite(trig, LOW);
+      digitalWrite(trig, LOW);*/
+      sonar.ping();
       Serial.println("Ping...");
     }
   }
