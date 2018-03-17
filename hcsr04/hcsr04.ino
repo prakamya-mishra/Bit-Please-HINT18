@@ -1,7 +1,7 @@
 void setup() {
   // put your setup code here, to run once:
   pinMode(12,OUTPUT);
-  pinMode(10, INPUT);
+  pinMode(9, INPUT);
   Serial.begin(9600);
 
 }
@@ -13,6 +13,6 @@ void loop() {
   digitalWrite(12, HIGH);
   delayMicroseconds(10);
   digitalWrite(12, LOW);
-  long duration = pulseIn(10, HIGH);
+  long duration = pulseIn(9, HIGH);
   Serial.println(duration);
 }

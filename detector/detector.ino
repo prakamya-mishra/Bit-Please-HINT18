@@ -4,7 +4,7 @@ const int rx = 2;
 const int tx = 3;
 long durationL, durationR;
 const int echoL = 12;
-const int echoR = 10;
+const int echoR = 11;
 const int trigL = 9;
 const int trigR = 8;
 #define SPEED 343
@@ -33,14 +33,15 @@ void loop() {
   digitalWrite(trigR, HIGH);
   digitalWrite(trigL, HIGH);
   delayMicroseconds(10);
-  durationL = pulseIn(12, HIGH);
-  durationR = pulseIn(10, HIGH);
+  digitalWrite(trigR, LOW);
+  digitalWrite(trigL, LOW);
+  durationL = pulseIn(echoL, HIGH);
+  durationR = pulseIn(echoR, HIGH);
   long distL = SPEED * durationL;
   long distR = SPEED * durationR;
-  String dL = (String)distL;
-  String dR = (String)distR;
-  Serial.println("L :" + dL + " R: "+ dR);
-  delay(2000);
+  Serial.println(distL);
+  Serial.println(distR);
+  delay(1000);
   
   //btserial.write("0");
   //delay(2000);
