@@ -75,8 +75,9 @@ public class SensorTask extends AsyncTask<Void, Void, Void> implements SensorEve
 
     private void writeToFirebase(){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("sensorinfo");
-        DatabaseReference parentRef = database.getReference("gyroZ");
+        DatabaseReference parentRef = database.getReference();
+        DatabaseReference sensorInfoRef = parentRef.child("sensorinfo");
+        DatabaseReference gyroRef = sensorInfoRef.child("gyroZ");
         parentRef.setValue(new Float(Z));
     }
 }
