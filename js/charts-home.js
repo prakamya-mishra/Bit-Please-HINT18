@@ -658,9 +658,9 @@ function displayCharts(sensorData){
       responsive: true
   };
   $('#dist').html(sensorData.distance+" cm");
-  $('#gx').html(sensorData.gyroX+" rad/s");
-  $('#gy').html(sensorData.gyroY+" rad/s");
-  $('#gz').html(sensorData.gyroZ+" rad/s");
+  $('#gx').html((Math.floor(sensorData.gyroX * 100) / 100)+" rad/s");
+  $('#gy').html((Math.floor(sensorData.gyroY * 100) / 100)+" rad/s");
+  $('#gz').html((Math.floor(sensorData.gyroZ * 100) / 100)+" rad/s");
   var distper = sensorData.distance/3;
   $('#distStyle').css('width', distper+'%');
 }
