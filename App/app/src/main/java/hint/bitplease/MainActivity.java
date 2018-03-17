@@ -152,6 +152,5 @@ public class MainActivity extends AppCompatActivity {
         gyroXRef.setValue(new Float(1.0));
         gyroYRef.setValue(new Float(1.0));
         gyroZRef.setValue(new Float(1.0));
-        //sensorDataRef.setValue(new SensorData(1.0f,1.0f,1.0f,1.0f,1.0f,1.0f));
     }
 }
