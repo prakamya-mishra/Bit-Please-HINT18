@@ -15,7 +15,8 @@ void loop() {
   if(btserial.available())
   {
     byte c = btserial.read();
-    Serial.println(millis());
+    digitalWrite(trig, LOW);
+    delayMicroseconds(2);
     if(c)
     {
       digitalWrite(trig, HIGH);
