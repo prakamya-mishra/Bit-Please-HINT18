@@ -96,25 +96,25 @@ public class MainActivity extends AppCompatActivity {
         DatabaseReference gyroXRef = sensorDataRef.child("gyroX");
         DatabaseReference gyroYRef = sensorDataRef.child("gyroY");
         DatabaseReference gyroZRef = sensorDataRef.child("gyroZ");
-        DatabaseReference distanceLeft = sensorDataRef.child("distanceLeft");
-        DatabaseReference distanceRight = sensorDataRef.child("distanceRight");
+        final DatabaseReference distanceLeft = sensorDataRef.child("distanceLeft");
+        final DatabaseReference distanceRight = sensorDataRef.child("distanceRight");
         distanceLeft.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<List<String>> genericTypeIndicator = new GenericTypeIndicator<List<String>>();
-                List distanceLeft = dataSnapshot.getValue(genericTypeIndicator);
-                if(distanceLeft == null){
+                GenericTypeIndicator<List<Float>> genericTypeIndicator = new GenericTypeIndicator<List<Float>>(){};
+                List<Float> distanceLeftList = (List<Float>) dataSnapshot.getValue(genericTypeIndicator);
+                if(distanceLeftList == null){
                     Log.d(TAG,"Data error");
                 }
                 else{
-                    if(distanceLeft.size() == 10){
-                        distanceLeft.remove(0);
-                        distanceLeft.add(new Float(1.0));
+                    if(distanceLeftList.size() == 10){
+                        distanceLeftList.remove(0);
+                        distanceLeftList.add(new Float(1.0));
                     }
                     else{
-                        distanceLeft.add(new Float(1.0));
+                        distanceLeftList.add(new Float(1.0));
                     }
-                    
+                    distanceLeft.setValue(distanceLeftList);
                 }
             }
 
@@ -126,13 +126,20 @@ public class MainActivity extends AppCompatActivity {
         distanceRight.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<List<String>> genericTypeIndicator = new GenericTypeIndicator<List<String>>();
-                List distanceRight = dataSnapshot.getValue(genericTypeIndicator);
-                if(distanceRight == null){
+                GenericTypeIndicator<List<Float>> genericTypeIndicator = new GenericTypeIndicator<List<Float>>(){};
+                List<Float> distanceRightList = (List<Float>) dataSnapshot.getValue(genericTypeIndicator);
+                if(distanceRightList == null){
                     Log.d(TAG,"Data error");
                 }
                 else{
-
+                    if(distanceRightList.size() == 10){
+                        distanceRightList.remove(0);
+                        distanceRightList.add(new Float(1.0));
+                    }
+                    else{
+                        distanceRightList.add(new Float(1.0));
+                    }
+                    distanceRight.setValue(distanceRightList);
                 }
             }
 
@@ -145,6 +152,6 @@ public class MainActivity extends AppCompatActivity {
         gyroXRef.setValue(new Float(1.0));
         gyroYRef.setValue(new Float(1.0));
         gyroZRef.setValue(new Float(1.0));
-        sensorDataRef.setValue(new SensorData(1.0f,1.0f,1.0f,1.0f,1.0f,1.0f));
+        //sensorDataRef.setValue(new SensorData(1.0f,1.0f,1.0f,1.0f,1.0f,1.0f));
     }
 }
