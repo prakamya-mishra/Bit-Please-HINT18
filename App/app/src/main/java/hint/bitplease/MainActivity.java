@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         Distance = (TextView) findViewById(R.id.dist);
         btnSpeak = (ImageButton) findViewById(R.id.btnSpeak);
         refreshButton = (Button) findViewById(R.id.refresh);
+        Distance.setText("-");
         final Random random = new Random();
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,13 +187,13 @@ public class MainActivity extends AppCompatActivity {
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     txtSpeechInput.setText(result.get(0));
                     Command = result.get(0);
-                    if(Command.equals("Stop")){
+                    if(Command.equalsIgnoreCase("Stop")){
                         Toast.makeText(getApplicationContext(),"Luggage stopped",Toast.LENGTH_LONG).show();
                     }
-                    else if(Command.equals("Hello")){
+                    else if(Command.equalsIgnoreCase("Hello")){
                         Toast.makeText(getApplicationContext(),"Hey!!!!",Toast.LENGTH_LONG).show();
                     }
-                    else if(Command.equals("follow me"))
+                    else if(Command.equalsIgnoreCase("follow me"))
                     {
                         Random random = new Random();
                         Toast.makeText(getApplicationContext(),"Following started!",Toast.LENGTH_LONG).show();
@@ -273,6 +274,5 @@ public class MainActivity extends AppCompatActivity {
         });
         Float dist = new Float(random.nextInt(300) + 1);
         distanceRef.setValue(dist);
-        Distance.setText(dist+"");
     }
 }
