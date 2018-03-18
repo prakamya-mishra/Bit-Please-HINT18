@@ -2,16 +2,18 @@
 #include<NewPing.h>
 
 NewPing left(12,9);
-NewPing right(11,8);
+NewPing right(7,8);
 const int rx = 2;
 const int tx = 3;
 long durationL, durationR;
-const int echoL = 12;
-const int echoR = 11;
-const int trigL = 9;
-const int trigR = 8;
 int motorL = 0;
 int motorR = 0;
+const int motorL1 = 11;
+const int motorL2 = 10;
+const int motorR1 = 1;
+const int motorR2 = 0;
+const int ENR = 6;
+const int ENL = 5;
 #define SPEED 343
 
 SoftwareSerial btserial(rx,tx);
@@ -37,6 +39,12 @@ void loop() {
   delay(100);
   motorL = map(distL, 0, 15000, 0, 255);
   motorR = map(distR, 0, 15000, 0, 255);
+  analogWrite(ENR, motorR);
+  analogWrite(ENL, motorL);
+  digitalWrite(motorL1, HIGH);
+  digitalWrite(motorL2, LOW);
+  digitalWrite(motorR1, LOW);
+  digitalWrite(motorR2, HIGH);
   Serial.println("L: "+(String)motorL+" R: "+(String)motorR);
   //btserial.write("0");
   //delay(2000);
