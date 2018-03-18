@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -33,8 +34,9 @@ public class MainActivity extends AppCompatActivity {
     private final String TAG = MainActivity.class.getName();
 
     private TextView txtSpeechInput;
-    private EditText Distance;
+    private TextView Distance;
     private ImageButton btnSpeak;
+    private Button refreshButton;
     private final int REQ_CODE_SPEECH_INPUT = 100;
     public String Command;
     private FirebaseDatabase firebaseDatabase;
@@ -48,8 +50,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         txtSpeechInput = (TextView) findViewById(R.id.txtView);
-        Distance = (EditText) findViewById(R.id.dist);
+        Distance = (TextView) findViewById(R.id.dist);
         btnSpeak = (ImageButton) findViewById(R.id.btnSpeak);
+        refreshButton = (Button) findViewById(R.id.refresh);
+        final Random random = new Random();
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Distance.setText((random.nextInt(100) + 1)+"");
+            }
+        });
         btnSpeak.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -60,9 +70,7 @@ public class MainActivity extends AppCompatActivity {
         firebaseWriteThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                for(int i = 0;i <= 10;i++){
-                    writeValuesToFirebase();
-                }
+                writeValuesToFirebase();
             }
         });
         firebaseWriteThread.run();
@@ -158,8 +166,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
-                getString(R.string.speech_prompt));
         try {
             startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
         } catch (ActivityNotFoundException a) {
@@ -180,6 +186,24 @@ public class MainActivity extends AppCompatActivity {
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     txtSpeechInput.setText(result.get(0));
                     Command = result.get(0);
+                    if(Command.equals("Stop")){
+                        Toast.makeText(getApplicationContext(),"Luggage stopped",Toast.LENGTH_LONG).show();
+                    }
+                    else if(Command.equals("Hello")){
+                        Toast.makeText(getApplicationContext(),"Hey!!!!",Toast.LENGTH_LONG).show();
+                    }
+                    else if(Command.equals("follow me"))
+                    {
+                        Random random = new Random();
+                        Toast.makeText(getApplicationContext(),"Following started!",Toast.LENGTH_LONG).show();
+                        Distance.setText((random.nextInt(50) + 1) + "");
+                    }
+                    else
+                    {
+                        Toast.makeText(getApplicationContext(),"Invalid command.",Toast.LENGTH_LONG).show();
+
+                    }
+
                 }
                 break;
             }
@@ -195,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
         DatabaseReference distanceRef = sensorDataRef.child("distance");
         final DatabaseReference distanceLeft = sensorDataRef.child("distanceLeft");
         final DatabaseReference distanceRight = sensorDataRef.child("distanceRight");
-        distanceLeft.addValueEventListener(new ValueEventListener() {
+        distanceLeft.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 GenericTypeIndicator<List<Float>> genericTypeIndicator = new GenericTypeIndicator<List<Float>>(){};
@@ -221,9 +245,10 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG,databaseError.getCode() + databaseError.getMessage());
             }
         });
-        distanceRight.addValueEventListener(new ValueEventListener() {
+        distanceRight.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 GenericTypeIndicator<List<Float>> genericTypeIndicator = new GenericTypeIndicator<List<Float>>(){};
                 List<Float> distanceRightList = (List<Float>) dataSnapshot.getValue(genericTypeIndicator);
                 if(distanceRightList == null){
@@ -246,6 +271,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG,databaseError.getCode() + databaseError.getMessage());
             }
         });
-        distanceRef.setValue(new Float(random.nextInt(300) + 1));
+        Float dist = new Float(random.nextInt(300) + 1);
+        distanceRef.setValue(dist);
+        Distance.setText(dist+"");
     }
 }
