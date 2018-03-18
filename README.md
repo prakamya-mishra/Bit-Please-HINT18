@@ -25,7 +25,7 @@ Android Application Branch: [Android Aplication](https://github.com/prakamya-mis
 Website Branch: [Website](https://github.com/prakamya-mishra/Bit-Please-HINT18/tree/Web) </br>
 Arduino Branch: [Smart Luggage Bot](https://github.com/prakamya-mishra/Bit-Please-HINT18/tree/Arduino) </br>
 
-Demo URL: [Demo](https://drive.google.com/drive/folders/1FBMUJ0gOxFI_hJfioa4AQvhR5kkkPQJZ)
+Demo URL: [Demo](https://www.youtube.com/watch?v=DHYxtmiw1UE)
 
 Contributors:-
 1. [Prakamya Mishra](https://github.com/prakamya-mishra)
