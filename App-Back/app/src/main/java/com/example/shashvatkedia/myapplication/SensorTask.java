@@ -8,8 +8,11 @@ import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
 
@@ -24,6 +27,10 @@ public class SensorTask extends AsyncTask<Void, Void, Void> implements SensorEve
     private int flag = 0,count = 0;
     private float X,Y,Z;
 
+    private FirebaseDatabase database;
+    private DatabaseReference parentRef;
+
+
     public SensorTask(Context context){
         con = context;
     }
@@ -31,6 +38,21 @@ public class SensorTask extends AsyncTask<Void, Void, Void> implements SensorEve
     @Override
     protected Void doInBackground(Void... voids) {
             monitorGyroscope();
+            database = FirebaseDatabase.getInstance();
+        parentRef = database.getReference();
+            DatabaseReference sensorInfoRef = parentRef.child("sensorinfo");
+            DatabaseReference pickedUpRef = sensorInfoRef.child("pickedUp");
+            pickedUpRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Integer pickedUp = dataSnapshot.getValue(Integer.class);
+                    flag = pickedUp;
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
             while(true){
                 if(flag == 1){
                     SensorManager manager = (SensorManager) con.getSystemService(Context.SENSOR_SERVICE);

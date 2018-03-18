@@ -82,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements FingerLockResultC
                         }
                     });
                     new FingerprintDialog.Builder().with(MainActivity.this).setKeyName(KEY_NAME).setRequestCode(69).show();
+                    lockedBitRef = sensorDataRef.child("lockedBit");
+                    lockedBitRef.setValue(new Integer(1));
                 }
             });
         }
