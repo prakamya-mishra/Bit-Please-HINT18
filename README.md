@@ -16,5 +16,9 @@ Using RFID Sensors and RFID tags, an Automatic Shopping Cart that will follow a 
 
 
   
-  
+ 
+Android Application Branch: [Android Aplication](https://github.com/prakamya-mishra/Bit-Please-HINT18/tree/Android) </br>
+Website Branch: [Website](https://github.com/prakamya-mishra/Bit-Please-HINT18/tree/Web) </br>
+Arduino Branch: [Smart Luggage Bot](https://github.com/prakamya-mishra/Bit-Please-HINT18/tree/Arduino) </br>
+
 Demo URL: [Demo](https://drive.google.com/drive/folders/1FBMUJ0gOxFI_hJfioa4AQvhR5kkkPQJZ)
