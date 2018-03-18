@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "865657687855",
+    "firebase_url": "https://bitpleasehint18.firebaseio.com",
+    "project_id": "bitpleasehint18",
+    "storage_bucket": "bitpleasehint18.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:865657687855:android:1e0920f65ce164f6",
+        "android_client_info": {
+          "package_name": "hint.bitplease"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "865657687855-9j95nedgrl29012vj17qie3q1mdtvj1k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hint.bitplease",
+            "certificate_hash": "64a05d45c7283b79b1a38c014b145b8c54915981"
+          }
+        },
+        {
+          "client_id": "865657687855-6ene24v0gcplfhr4ahr0bhfe5hfm5oea.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpGfyOm9onWO96xyWgb_ozBdrP3tOhtbw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "865657687855-6ene24v0gcplfhr4ahr0bhfe5hfm5oea.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
