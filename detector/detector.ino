@@ -17,10 +17,9 @@ const int ENL = 5;
 #define SPEED 343
 
 SoftwareSerial btserial(rx,tx);
+SoftwareSerial esp(5,6);
 
 void setup() {
-  
-  pinMode(13, OUTPUT);
   Serial.begin(9600);
   btserial.begin(9600);
 }
@@ -34,7 +33,8 @@ void loop() {
     btserial.write(2);
     long distL = left.ping(); //Time to reach the sensor
     long distR = right.ping();
-    //Serial.println("L "+(String)distL+ " R "+(String)distR);
+    esp.println("L "+(String)distL+ " R "+(String)distR);
+    Serial.println("L "+(String)distL+ " R "+(String)distR);
     //Serial.println(distR);
     
     /*motorL = map(distL, 0, 2000, 0, 255);
@@ -50,16 +50,19 @@ void loop() {
  * Digital Motor Control
  ********************************************************************************/
 
-    while(distL > distR)
+    while(left.ping() > right.ping())
     {
+      Serial.println("MotorL");
       digitalWrite(motorL1, HIGH);
       digitalWrite(motorL2, LOW);
     }
-    while(distR > distL)
+    while(right.ping() > left.ping())
     {
+      Serial.println("MotorR");
       digitalWrite(motorR1, HIGH);
       digitalWrite(motorR2, LOW);
     }
+    Serial.println("MotorStraight");
     digitalWrite(motorL1, HIGH);
     digitalWrite(motorL2, LOW);
     digitalWrite(motorR1, LOW);
