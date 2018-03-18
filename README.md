@@ -14,9 +14,13 @@ This project aims to make an Automatic Trolley Human Follower for a general or a
 1. Smart Shopping Cart
 Using RFID Sensors and RFID tags, an Automatic Shopping Cart that will follow a human. Whenever a product is put inside the cart, using the RFID tag on the product, the RFID sensors on the cart will automatically add the item on the bill that the cart will maintain.
 
+2. Smart GolfCart
+Have you ever wanted to play golf alone and not with any random person following you around? Well this is the solution to your problem.
 
-  
- 
+3. Cheap Indoor Navigation
+Few of the ultrasound emitters can be placed strategically to triangulate the position in indoor areas.
+
+
 Android Application Branch: [Android Aplication](https://github.com/prakamya-mishra/Bit-Please-HINT18/tree/Android) </br>
 Website Branch: [Website](https://github.com/prakamya-mishra/Bit-Please-HINT18/tree/Web) </br>
 Arduino Branch: [Smart Luggage Bot](https://github.com/prakamya-mishra/Bit-Please-HINT18/tree/Arduino) </br>
