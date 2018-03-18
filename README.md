@@ -1,4 +1,4 @@
-# Bit-Please-HINT18
+# Smart Luggage
 ### Features:
 #### 1. Automatic Follower Bot 
 #### 2. Anti-theft using gyroscope and accelerometer (Uses Firebase, push notifications)
