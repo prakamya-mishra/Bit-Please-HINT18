@@ -25,6 +25,21 @@
         android:gravity="center">
 
         <Button
+            android:id="@+id/beginAuthentication"
+            android:layout_height="56dp"
+            android:layout_marginTop="16dp"
+            android:enabled="false"
+            android:text="@string/use_fingerprint"
+            app:layout_widthPercent="75%" />
+
+    </android.support.percent.PercentRelativeLayout>
+
+    <android.support.percent.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <Button
             android:id="@+id/useDialog"
             android:layout_height="56dp"
             android:text="@string/use_dialog"

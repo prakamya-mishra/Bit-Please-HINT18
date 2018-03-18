@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import br.com.goncalves.pugnotification.notification.PugNotification;
 
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference sensorDataRef;
     private DatabaseReference parentRef;
 
+    private Thread firebaseWriteThread = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +57,15 @@ public class MainActivity extends AppCompatActivity {
                 promptSpeechInput();
             }
         });
-       // writeValuesToFirebase();
+        firebaseWriteThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for(int i = 0;i <= 10;i++){
+                    writeValuesToFirebase();
+                }
+            }
+        });
+        firebaseWriteThread.run();
         addPickedUpListener();
         addMaliciousUserListener();
     }
@@ -177,13 +188,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void writeValuesToFirebase(){
+        final Random random = new Random();
         firebaseDatabase = FirebaseDatabase.getInstance();
         parentRef = firebaseDatabase.getReference();
         sensorDataRef = parentRef.child("sensorinfo");
         DatabaseReference distanceRef = sensorDataRef.child("distance");
         final DatabaseReference distanceLeft = sensorDataRef.child("distanceLeft");
         final DatabaseReference distanceRight = sensorDataRef.child("distanceRight");
-        distanceLeft.addListenerForSingleValueEvent(new ValueEventListener() {
+        distanceLeft.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 GenericTypeIndicator<List<Float>> genericTypeIndicator = new GenericTypeIndicator<List<Float>>(){};
@@ -194,10 +206,11 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     if(distanceLeftList.size() == 10){
                         distanceLeftList.remove(0);
-                        distanceLeftList.add(new Float(1.0));
+                        Log.e(TAG,random.nextInt(300) + 1 + "");
+                        distanceLeftList.add(new Float(random.nextInt(300) + 1));
                     }
                     else{
-                        distanceLeftList.add(new Float(1.0));
+                        distanceLeftList.add(new Float(random.nextInt(300) + 1));
                     }
                     distanceLeft.setValue(distanceLeftList);
                 }
@@ -208,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG,databaseError.getCode() + databaseError.getMessage());
             }
         });
-        distanceRight.addListenerForSingleValueEvent(new ValueEventListener() {
+        distanceRight.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 GenericTypeIndicator<List<Float>> genericTypeIndicator = new GenericTypeIndicator<List<Float>>(){};
@@ -219,10 +232,10 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     if(distanceRightList.size() == 10){
                         distanceRightList.remove(0);
-                        distanceRightList.add(new Float(1.0));
+                        distanceRightList.add(new Float(random.nextInt(300) + 1));
                     }
                     else{
-                        distanceRightList.add(new Float(1.0));
+                        distanceRightList.add(new Float(random.nextInt(300) + 1));
                     }
                     distanceRight.setValue(distanceRightList);
                 }
@@ -233,6 +246,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG,databaseError.getCode() + databaseError.getMessage());
             }
         });
-        distanceRef.setValue(new Float(1.0));
+        distanceRef.setValue(new Float(random.nextInt(300) + 1));
     }
 }

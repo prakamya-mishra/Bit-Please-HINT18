@@ -70,7 +70,7 @@ public class SensorTask extends AsyncTask<Void, Void, Void> implements SensorEve
             Z = event.values[2];
             Log.e(TAG,event.values[2] + "");
             float z = event.values[2];
-            if(z > 10){
+            if(z > 11){
                 flag = 1;
             }
         }

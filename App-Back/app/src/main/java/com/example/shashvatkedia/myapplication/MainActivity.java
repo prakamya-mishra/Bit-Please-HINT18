@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements FingerLockResultC
     private FingerLockManager fingerLockManager;
 
     private TextView mStatus;
+    private Button mButton;
 
     private static final int USE_FINGERPRINT_REQUEST_CODE = 1;
     private static final int REQUEST_FINGERPRINT_PERMISSION = 2;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements FingerLockResultC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mStatus = (TextView) findViewById(R.id.status);
+        mButton = (Button) findViewById(R.id.beginAuthentication);
         Button useDialog = (Button) findViewById(R.id.useDialog);
         fingerLockManager = FingerLock.initialize(this,KEY_NAME);
         if(useDialog != null){
@@ -83,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements FingerLockResultC
                 }
             });
         }
-        initPickedUpState();
+       // initPickedUpState();
     }
 
     @Override
@@ -98,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements FingerLockResultC
                 break;
 
             case FingerLock.FINGERPRINT_NOT_RECOGNIZED :
+                Log.e(TAG,"Wrong");
                 firebaseDatabase = FirebaseDatabase.getInstance();
                 parentRef = firebaseDatabase.getReference();
                 sensorDataRef = parentRef.child("sensorinfo");
@@ -137,23 +140,63 @@ public class MainActivity extends AppCompatActivity implements FingerLockResultC
 
     @Override
     public void onFingerLockAuthenticationSucceeded(){
+        Log.e(TAG,"Success");
+        mButton.setText(R.string.start_scanning);
         mStatus.setText(R.string.status_authenticated);
         firebaseDatabase = FirebaseDatabase.getInstance();
         parentRef = firebaseDatabase.getReference();
         sensorDataRef = parentRef.child("sensorinfo");
-        DatabaseReference lockedBit = sensorDataRef.child("lockedBit");
-        lockedBit.setValue(new Integer(1));
-        initPickedUpState();
-        executeTask();
+        final DatabaseReference lockedBit = sensorDataRef.child("lockedBit");
+        lockedBit.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Integer lockedBitValue = dataSnapshot.getValue(Integer.class);
+                if(lockedBitValue == 1){
+                    lockedBit.setValue(new Integer(0));
+                }
+                else{
+                    lockedBit.setValue(new Integer(1));
+                    initPickedUpState();
+                    executeTask();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     @Override
     public void onFingerLockReady(){
         mStatus.setText(R.string.status_ready);
+        mButton.setText(R.string.start_scanning);
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fingerLockManager.start();
+            }
+        });
+        mButton.setEnabled(true);
     }
 
     @Override
     public void onFingerLockScanning(boolean invalidKey){
+        mButton.setText(R.string.stop_scanning);
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fingerLockManager.stop();
+                mStatus.setText(R.string.status_ready);
+                mButton.setText(R.string.start_scanning);
+                mButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        fingerLockManager.start();
+                    }
+                });
+            }
+        });
         if(invalidKey){
             mStatus.setText(R.string.status_scanning_new);
         }
@@ -302,7 +345,26 @@ public class MainActivity extends AppCompatActivity implements FingerLockResultC
     @Override
     protected void onResume(){
         super.onResume();
-        executeTask();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        parentRef = firebaseDatabase.getReference();
+        sensorDataRef = parentRef.child("sensorinfo");
+        DatabaseReference lockedBitRef = sensorDataRef.child("lockedBit");
+        lockedBitRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Integer lockedBit = dataSnapshot.getValue(Integer.class);
+                if (lockedBit == 1) {
+                    initPickedUpState();
+                    executeTask();
+                } else {
+                    Log.d(TAG, "The baggage has not been assigned to the user");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     @Override
