@@ -35,7 +35,7 @@ function displayCharts(sensorData){
               }],
               yAxes: [{
                   ticks: {
-                      max: 200,
+                      max: 300,
                       min: 10
                   },
                   display: true,
@@ -658,9 +658,9 @@ function displayCharts(sensorData){
       responsive: true
   };
   $('#dist').html(sensorData.distance+" cm");
-  $('#gx').html((Math.floor(sensorData.gyroX * 100) / 100)+" rad/s");
-  $('#gy').html((Math.floor(sensorData.gyroY * 100) / 100)+" rad/s");
-  $('#gz').html((Math.floor(sensorData.gyroZ * 100) / 100)+" rad/s");
+  $('#gx').html((Math.floor(sensorData.gyroX * 100) / 100));
+  $('#gy').html((Math.floor(sensorData.gyroY * 100) / 100));
+  $('#gz').html((Math.floor(sensorData.gyroZ * 100) / 100));
   var distper = sensorData.distance/3;
   $('#distStyle').css('width', distper+'%');
 }
