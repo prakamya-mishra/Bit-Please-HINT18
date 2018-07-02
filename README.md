@@ -24,6 +24,7 @@ Few of the ultrasound emitters can be placed strategically to triangulate the po
 Android Application Branch: [Android Aplication](https://github.com/prakamya-mishra/Bit-Please-HINT18/tree/Android) </br>
 Website Branch: [Website](https://github.com/prakamya-mishra/Bit-Please-HINT18/tree/Web) </br>
 Arduino Branch: [Smart Luggage Bot](https://github.com/prakamya-mishra/Bit-Please-HINT18/tree/Arduino) </br>
+Website Link: [Website Link](https://prakamya-mishra.github.io/Bit-Please-HINT18/) </br>
 
 Demo URL: [Demo](https://www.youtube.com/watch?v=DHYxtmiw1UE)
 
